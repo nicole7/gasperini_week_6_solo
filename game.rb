@@ -10,7 +10,7 @@ attr_reader :placeholder, :word, :letter
 
 
 	def initialize(word)
-		@word = word.split('')
+		@word = word.downcase.split('')
 		@placeholder = ""
 		@letter = ''
 	end
@@ -26,17 +26,20 @@ attr_reader :placeholder, :word, :letter
 
 	def check_guesses(letter)
 		@letter = letter
-		p letter
-		@word.split
 		@word.each do |char|
-			p char
 			if letter == char
+				#char_idx will numerical index of word at the 
+				#matching letter 
 				char_idx = word.index(char)
-				placeholder[char_index].replace(char)
+				#placeholder at that numerical index equals 
+				#that char(letter) from word
+				placeholder[char_idx] = char
+
 			end
-			p placeholder
+			
 		end
-		
+		#return this placeholder
+		p placeholder
 	end
 
 end
@@ -46,9 +49,22 @@ word = gets.chomp
 game = Game.new(word)
 game.create_placeholder
 
-p "Player 2, please guess a letter"
-letter = gets.chomp
-game.check_guesses(letter)
+index = 0
+while index < word.length
+
+	p "Player 2, please guess a letter. You only get #{word.length} chances"
+	letter = gets.chomp
+	placeholder = game.check_guesses(letter)
+	final_placeholder = placeholder
+
+	index += 1
+end
+
+if !placeholder.include?("-")
+	p "Congrats! You got all guesses right!"
+else
+	p "Yikes, don't quit your day job!"
+end
 
 
 
